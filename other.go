@@ -5,6 +5,11 @@ func (reg *Regexp) Match(buf []byte) bool {
 	return reg.RE.Match(buf)
 }
 
+// MatchStr returns true if a []byte matches a regex
+func (reg *Regexp) MatchStr(buf string) bool {
+	return reg.RE.MatchString(buf)
+}
+
 // Split splits a string, and keeps capture groups
 //
 // Similar to JavaScript .split(/re/)

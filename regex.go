@@ -14,7 +14,7 @@ type Regexp struct {
 }
 
 var reg_comment = regexp.MustCompile(`\(\?#.*?\)`)
-var reg_param_quote = regexp.MustCompile(`\%([0-9]|\{[0-9]+\})|\\[\\']`)
+var reg_param_quote = regexp.MustCompile(`\\?(%([0-9]|\{[0-9]+\})|[\\'])`)
 var reg_escapeParam = regexp.MustCompile(`[\\%]`)
 
 var cache common.CacheMap[*Regexp] = common.NewCache[*Regexp]()
@@ -74,7 +74,7 @@ func compRE(re string, params []string) string {
 			if b[1] == '\'' {
 				return []byte{'`'}
 			}
-			return b
+			return b[1:]
 		}
 
 		if b[0] == '%' {

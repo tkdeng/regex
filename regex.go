@@ -73,8 +73,10 @@ func compRE(re string, params []string) string {
 		if b[0] == '\\' {
 			if b[1] == '\'' {
 				return []byte{'`'}
+			} else if b[1] == '%' {
+				return b[1:]
 			}
-			return b[1:]
+			return b
 		}
 
 		if b[0] == '%' {

@@ -1,7 +1,6 @@
 package regex
 
 import (
-	"fmt"
 	"regexp"
 	"strconv"
 	"time"
@@ -72,7 +71,6 @@ func compRE(re string, params []string) string {
 
 	reB = reg_param_quote.ReplaceAllFunc(reB, func(b []byte) []byte {
 		if b[0] == '\\' {
-			fmt.Println(b)
 			if b[1] == '\'' {
 				return []byte{'`'}
 			}

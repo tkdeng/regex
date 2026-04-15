@@ -1,6 +1,7 @@
 package regex
 
 import (
+	"fmt"
 	"regexp"
 	"strconv"
 	"time"
@@ -14,7 +15,7 @@ type Regexp struct {
 }
 
 var reg_comment = regexp.MustCompile(`\(\?#.*?\)`)
-var reg_param_quote = regexp.MustCompile(`\\?(%([0-9]|\{[0-9]+\})|[\\'])`)
+var reg_param_quote = regexp.MustCompile(`\\?%([0-9]|\{[0-9]+\})|\\[\\']`)
 var reg_escapeParam = regexp.MustCompile(`[\\%]`)
 
 var cache common.CacheMap[*Regexp] = common.NewCache[*Regexp]()
@@ -71,6 +72,7 @@ func compRE(re string, params []string) string {
 
 	reB = reg_param_quote.ReplaceAllFunc(reB, func(b []byte) []byte {
 		if b[0] == '\\' {
+			fmt.Println(b)
 			if b[1] == '\'' {
 				return []byte{'`'}
 			}

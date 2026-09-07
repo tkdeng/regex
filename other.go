@@ -13,8 +13,6 @@ func (reg *Regexp) Split[T ~string | ~[]byte](buf T) []T {
 	
 	ind := reg.RE.FindAllIndex(b, -1)
 
-	
-
 	res := []T{}
 	trim := 0
 	for _, pos := range ind {
@@ -37,3 +35,35 @@ func (reg *Regexp) Split[T ~string | ~[]byte](buf T) []T {
 
 	return res
 }
+
+// SplitStr splits a string, and keeps capture groups
+//
+// Similar to JavaScript .split(/re/)
+//! Replaced with 1.27 generic methods
+/* func (reg *Regexp) SplitStr(str string) []string {
+	buf := []byte(str)
+
+	ind := reg.RE.FindAllIndex(buf, -1)
+
+	res := []string{}
+	trim := 0
+	for _, pos := range ind {
+		v := buf[pos[0]:pos[1]]
+		m := reg.RE.FindSubmatch(v)
+
+		if trim == 0 {
+			res = append(res, string(buf[:pos[0]]))
+		} else {
+			res = append(res, string(buf[trim:pos[0]]))
+		}
+		trim = pos[1]
+
+		for i := 1; i <= len(m)-1; i++ {
+			res = append(res, string(m[i]))
+		}
+	}
+
+	res = append(res, string(buf[trim:]))
+
+	return res
+} */

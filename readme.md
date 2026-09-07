@@ -68,7 +68,7 @@ func main(){
 
   // split a byte array in a similar way to JavaScript
   regex.Comp(`re|(keep this and split like in JavaScript)`).Split(myByteArray) // [][]byte
-  regex.Comp(`re|(keep this and split)`).SplitStr(myByteArray) // []string
+  regex.Comp(`re|(keep this and split)`).Split(string(myByteArray)) // []string
 
   // a regex string is modified before compiling, to add a few other features
   `use \' in place of ` + "`" + ` to make things easier`

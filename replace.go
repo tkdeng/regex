@@ -3,8 +3,8 @@ package regex
 // RepFunc replaces a string with the result of a function
 //
 // similar to JavaScript .replace(/re/, function(b){})
-func (reg *Regexp) RepFunc(buf []byte, rep func(b func(int) []byte) []byte) []byte {
-	return reg.RE.ReplaceAllFunc(buf, func(b []byte) []byte {
+func (reg *Regexp) RepFunc[T ~string | ~[]byte](buf T, rep func(b func(int) []byte) []byte) T {
+	return T(reg.RE.ReplaceAllFunc([]byte(buf), func(b []byte) []byte {
 		m := reg.RE.FindSubmatch(b)
 
 		r := rep(func(g int) []byte {
@@ -18,7 +18,7 @@ func (reg *Regexp) RepFunc(buf []byte, rep func(b func(int) []byte) []byte) []by
 			return []byte{}
 		}
 		return r
-	})
+	}))
 }
 
 // RepFuncBreak replaces a string with the result of a function
@@ -27,9 +27,9 @@ func (reg *Regexp) RepFunc(buf []byte, rep func(b func(int) []byte) []byte) []by
 // similar to JavaScript .replace(/re/, function(b){})
 //
 // return true to continue loop, false to break loop
-func (reg *Regexp) RepFuncBreak(buf []byte, rep func(b func(int) []byte) ([]byte, bool)) []byte {
+func (reg *Regexp) RepFuncBreak[T ~string | ~[]byte](buf T, rep func(b func(int) []byte) ([]byte, bool)) T {
 	stop := false
-	return reg.RE.ReplaceAllFunc(buf, func(b []byte) []byte {
+	return T(reg.RE.ReplaceAllFunc([]byte(buf), func(b []byte) []byte {
 		if stop {
 			return b
 		}
@@ -51,7 +51,7 @@ func (reg *Regexp) RepFuncBreak(buf []byte, rep func(b func(int) []byte) ([]byte
 			return []byte{}
 		}
 		return r
-	})
+	}))
 }
 
 // Rep replaces a string with another string
@@ -61,13 +61,13 @@ func (reg *Regexp) RepFuncBreak(buf []byte, rep func(b func(int) []byte) ([]byte
 // use $0 to use the full regex capture group
 //
 // use ${123} to use numbers with more than one digit
-func (reg *Regexp) Rep(buf []byte, rep []byte) []byte {
-	return reg.RE.ReplaceAll(buf, rep)
+func (reg *Regexp) Rep[T ~string | ~[]byte](buf T, rep T) T {
+	return T(reg.RE.ReplaceAll([]byte(buf), []byte(rep)))
 }
 
 // RepLit replaces a string with another string literal
 //
 // note: this function does not accept replacements like $1
-func (reg *Regexp) RepLit(buf []byte, rep []byte) []byte {
-	return reg.RE.ReplaceAllLiteral(buf, rep)
+func (reg *Regexp) RepLit[T ~string | ~[]byte](buf T, rep T) T {
+	return T(reg.RE.ReplaceAllLiteral([]byte(buf), []byte(rep)))
 }
